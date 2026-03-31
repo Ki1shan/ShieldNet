@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShieldNet | AI Neural Defense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <header>
+            <div class="logo">SHIELD<span>NET</span> <small>v2.0</small></div>
+            <div class="sys-status"><span class="pulse"></span> SYSTEM_READY</div>
+        </header>
+
+        <main class="dashboard">
+            <div class="visual-panel">
+                <div class="scan-bar"></div>
+                <img src="{{ url_for('static', filename='hero.jpeg') }}" alt="Neural Network Interface">
+            </div>
+
+            <div class="upload-panel">
+                <div class="glitch-title" data-text="THREAT_DETECTION">THREAT_DETECTION</div>
+                <p>Upload network traffic logs (CSV) for deep heuristic analysis.</p>
+                
+                <form action="/predict" method="post" enctype="multipart/form-data" style="height: 100%; display: flex; flex-direction: column;">
+                    <label class="drop-zone" for="file">
+                        <div class="icon" style="font-size: 3rem; margin-bottom: 10px;">⤓</div>
+                        <span id="file-name">DRAG_FILE_OR_BROWSE</span>
+                        <input type="file" name="file" id="file" hidden required onchange="document.getElementById('file-name').innerText=this.files[0].name">
+                    </label>
+
+                    <button type="submit" class="cyber-btn">
+                        <span>INITIALIZE_SCAN</span>
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <span>NETWORK_SECURED: TRUE</span>
+            <span>ENCRYPTION: AES-256</span>
+        </footer>
+    </div>
+</body>
+</html>
