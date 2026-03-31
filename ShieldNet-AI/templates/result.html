@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ShieldNet | Analysis Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="report-box {{ 'danger' if final_label != 'Normal' else 'safe' }}">
+        <header style="border:none; padding: 0;">
+            <h2 style="font-family: 'Orbitron'; color: var(--cyan);">FORENSIC_REPORT</h2>
+            <span style="font-size: 0.8rem;">SN-ID: {{ range(10000, 99999) | random }}</span>
+        </header>
+
+        <div style="text-align: center; padding: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
+            <h1 style="font-size: 3rem; color: {{ 'var(--red)' if final_label != 'Normal' else 'var(--cyan)' }};">
+                {{ final_label | default('ANALYSIS_COMPLETE') }}
+            </h1>
+            <p style="letter-spacing: 3px; font-size: 0.9rem; opacity: 0.7;">THREAT_CLASSIFICATION_STATUS</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4 style="color: var(--cyan); margin-bottom: 15px;">AI_CONFIDENCE</h4>
+                <div style="font-size: 2.5rem; font-weight: bold; text-align: center;">
+                    {{ confidence | default('0') }}%
+                </div>
+            </div>
+            <div class="stat-card">
+                <h4 style="color: var(--green); margin-bottom: 10px;">SYSTEM_LOGS</h4>
+                <div style="font-family: monospace; font-size: 0.75rem; color: var(--green); line-height: 1.4;">
+                    > ANALYZING_PACKETS... DONE<br>
+                    > CLASSIFYING_TRAFFIC... DONE<br>
+                    > STATUS: {{ final_label }}<br>
+                    > NO_INTEGRITY_ERRORS
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-top: 10px;">
+            <a href="/" class="cyber-btn" style="text-decoration: none; flex: 1; text-align: center;">NEW_SCAN</a>
+            <button onclick="window.print()" class="cyber-btn" style="flex: 1; border-color: var(--magenta); color: var(--magenta);">PRINT_PDF</button>
+        </div>
+    </div>
+</body>
+</html>
