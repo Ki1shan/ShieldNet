@@ -1,113 +1,204 @@
-# ShieldNet – AI-Based Cybersecurity Threat Monitoring System
+# 🛡️ ShieldNet
 
-ShieldNet is an intrusion detection system designed to analyze network traffic and classify cyber attacks using machine learning and deep learning techniques. The system processes both benchmark datasets and custom captured traffic to identify threats such as DoS, DDoS, PortScan, and Brute Force attacks.
+![Python](https://img.shields.io/badge/python-3.8+-blue)
+![Flask](https://img.shields.io/badge/flask-2.0+-green)
+![TensorFlow](https://img.shields.io/badge/tensorflow-2.x-orange)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![ML](https://img.shields.io/badge/models-ML%20%2B%20DL-blueviolet)
 
-## Project Overview
+> AI-powered network intrusion detection system — classifies DoS, DDoS, PortScan, and Brute Force attacks using Machine Learning and Deep Learning, with a Flask web interface for real-time prediction.
 
-This project focuses on building an end-to-end pipeline for detecting malicious network activity. It combines data preprocessing, feature engineering, model training, and deployment into a single system with a user-friendly web interface.
+---
 
-## Key Features
-Multi-class attack detection (DoS, DDoS, PortScan, Brute Force, Benign)
+## ⚠️ Disclaimer
 
-Data preprocessing including cleaning, normalization, and feature selection
+This project is developed for **educational and research purposes only**. It demonstrates intrusion detection concepts using the CIC-IDS2017 benchmark dataset and is not intended for production deployment without further hardening.
 
-Class imbalance handling using SMOTE
+---
 
-Implementation of multiple models:
+## Overview
 
-  1. Machine Learning (Logistic Regression, Random Forest, SVM)
+ShieldNet is an end-to-end network intrusion detection system (NIDS) that combines classical machine learning and deep learning to classify malicious network traffic. It processes both benchmark dataset traffic and custom Wireshark-captured PCAPs — from raw packets all the way to a web-based prediction interface.
 
-  2. Deep Learning (ANN, CNN, LSTM)
+The system detects:
+- **DoS** (Denial of Service)
+- **DDoS** (Distributed Denial of Service)
+- **PortScan** (Network Reconnaissance)
+- **Brute Force** (Credential Attacks)
+- **Benign** (Normal Traffic)
 
-Real-time prediction using a Flask web application
-
-Support for both dataset-based and custom network traffic inputs
-
-## Dataset
-CIC-IDS2017 dataset used for training and evaluation
-
-Custom network traffic captured using Wireshark and processed with tshark
-
-Feature alignment performed to ensure consistency between training and prediction data
+---
 
 ## System Pipeline
 
-Raw Network Traffic (PCAP / Dataset):
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        SHIELDNET PIPELINE                       │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              DATA SOURCES                               │   │
+│  │  CIC-IDS2017 Dataset  |  Custom PCAP (Wireshark/tshark) │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                            │                                    │
+│                            ▼                                    │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              PREPROCESSING (notebook(prep)/)            │   │
+│  │  Feature extraction → Cleaning → Normalization          │   │
+│  │  Feature selection → SMOTE (class imbalance)            │   │
+│  │  Feature alignment (dataset ↔ custom traffic)           │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                            │                                    │
+│                            ▼                                    │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              MODEL TRAINING (notebooks/)                │   │
+│  │                                                         │   │
+│  │  Machine Learning:        Deep Learning:                │   │
+│  │  - Logistic Regression    - ANN (Artificial Neural Net) │   │
+│  │  - Random Forest          - CNN (Convolutional NN)      │   │
+│  │  - SVM                    - LSTM (Long Short-Term Mem)  │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                            │                                    │
+│                            ▼                                    │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              MODEL SERIALIZATION (models/)              │   │
+│  │  Trained models + Scaler + Label Encoder                │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│                            │                                    │
+│                            ▼                                    │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │              FLASK WEB APP (app.py)                     │   │
+│  │  Upload traffic → Select model → Get prediction         │   │
+│  │  Supports dataset input + custom PCAP input             │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-→ Feature Extraction (tshark / dataset processing)
+---
 
-→ Data Preprocessing (cleaning, normalization, feature selection)
+## Models Implemented
 
-→ Model Training (ML & DL models)
+| Model | Type | Purpose |
+|-------|------|---------|
+| Logistic Regression | Machine Learning | Baseline classifier |
+| Random Forest | Machine Learning | Ensemble, high accuracy |
+| SVM | Machine Learning | Margin-based classification |
+| ANN | Deep Learning | Feedforward neural network |
+| CNN | Deep Learning | Pattern recognition in traffic features |
+| LSTM | Deep Learning | Sequential/temporal traffic analysis |
 
-→ Model Serialization (scaler, encoder, trained model)
+---
 
-→ Flask Application (prediction + interface)
+## Dataset
 
-## Tech Stack
-Python
+- **CIC-IDS2017** — Canadian Institute for Cybersecurity benchmark dataset containing labeled network flows for DoS, DDoS, PortScan, Brute Force, and Benign traffic
+- **Custom traffic** — Captured using Wireshark, processed with `tshark` for feature extraction
+- **Class imbalance** — Handled using SMOTE (Synthetic Minority Oversampling Technique)
+- **Feature alignment** — Ensures consistency between CIC-IDS2017 features and custom-captured traffic features
 
-Flask
-
-Scikit-learn
-
-TensorFlow / Keras
-
-Pandas, NumPy
-
-Wireshark & tshark
+---
 
 ## Project Structure
 
-app.py – Main Flask application for prediction and interface
-
-models/ – Trained models, scaler, and label encoder
-
-notebooks/ – Model training, EDA, and experimentation
-
-notebook(prep)/ – Data preprocessing and feature alignment
-
-templates/ – HTML files for frontend
-
-static/ – CSS and UI assets
-
-assets/ – Images and visualizations
-
-## How to Run
-1. Clone the repository
 ```
-git clone https://github.com/Ki1shan/ShieldNet
+ShieldNet/
+│
+├── app.py                    # Flask web application — prediction + interface
+│
+├── models/
+│   └── final_dl_models/      # Trained models, scaler, label encoder
+│
+├── notebooks/                # Model training, EDA, experimentation
+│
+├── notebook(prep)/           # Data preprocessing and feature alignment
+│
+├── templates/                # HTML frontend templates
+│
+├── static/                   # CSS and UI assets
+│
+├── assets/                   # Images and visualizations
+│
+├── requirements.txt
+└── .gitignore
 ```
 
-2. Navigate to the project folder
-```
+---
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Backend | Python, Flask |
+| Machine Learning | Scikit-learn |
+| Deep Learning | TensorFlow / Keras |
+| Data Processing | Pandas, NumPy |
+| Class Balancing | imbalanced-learn (SMOTE) |
+| Traffic Capture | Wireshark, tshark |
+| Frontend | HTML, CSS |
+
+---
+
+## Installation
+
+**Clone the repository:**
+```bash
+git clone https://github.com/Ki1shan/ShieldNet.git
 cd ShieldNet
 ```
-3. Install dependencies
-```
+
+**Install dependencies:**
+```bash
 pip install -r requirements.txt
 ```
-4. Run the application
-```
+
+**Run the application:**
+```bash
 python app.py
 ```
-5. Open in browser
+
+**Open in browser:**
 ```
 http://127.0.0.1:5000/
 ```
 
+---
+
+## Key Concepts
+
+- **Network Intrusion Detection (NIDS)** — passive monitoring and classification of network flows
+- **CIC-IDS2017** — industry-standard benchmark dataset for IDS research
+- **SMOTE** — synthetic data generation to handle severe class imbalance in attack datasets
+- **Feature Engineering** — extraction of flow-level statistics from raw packet captures
+- **Multi-class Classification** — simultaneous detection of multiple attack types in a single model
+- **PCAP Processing** — raw packet capture → tshark → feature vector → model prediction
+
+---
+
 ## Future Improvements
 
-Integration with live network traffic capture
+- Live network traffic capture integration
+- Real-time streaming analysis
+- Model optimization for higher accuracy
+- Cloud deployment (AWS/GCP)
+- SIEM integration (Splunk, ELK)
+- API endpoint for programmatic prediction
 
-Real-time streaming analysis
+---
 
-Model optimization for higher accuracy
+## Author
 
-Deployment on cloud platforms
+**Kishan N**
+Offensive Security Engineer | AI/ML Security Researcher
 
-Integration with SIEM tools
+Built ShieldNet to bridge the gap between machine learning research and practical network security — applying deep learning techniques to real-world intrusion detection challenges.
 
-## Disclaimer
+---
 
-This project is developed for educational purposes. It demonstrates intrusion detection concepts and is not intended for production deployment.
+## License
+
+MIT License — see `LICENSE` file for details.
+
+---
+
+*Traffic doesn't lie. The model just needs to learn how to listen.*
